@@ -44,13 +44,12 @@ class TestOrderFlowFromTop:
             order_page.fill_rental_info(user_data)
         with allure.step("Подтверждаем заказ"):
             order_page.confirm_order()
-        with allure.step("Проверяем, что сообщение об успехе отображается"):
-            assert order_page.is_success_message_displayed(), \
-                "Сообщение об успешном создании заказа не отображается"
-        with allure.step("Проверяем текст сообщения об успехе"):
+        with allure.step("Проверяем, что сообщение об успешном выполнении отображается"):
             success_message = order_page.get_success_message()
+            assert success_message, \
+                "Сообщение об успешном создании заказа не найдено"
             assert "Заказ оформлен" in success_message, \
-                f"Ожидалось сообщение 'Заказ оформлен', получено: {success_message}"
+                f"Неверный текст сообщения. Ожидалось 'Заказ оформлен', получено: '{success_message}'"
 
 class TestOrderFlowFromBottom:
     @pytest.mark.parametrize("user_data", [
@@ -93,10 +92,9 @@ class TestOrderFlowFromBottom:
             order_page.fill_rental_info(user_data)
         with allure.step("Подтверждаем заказ"):
             order_page.confirm_order()
-        with allure.step("Проверяем, что сообщение об успехе отображается"):
-            assert order_page.is_success_message_displayed(), \
-                "Сообщение об успешном создании заказа не отображается"
-        with allure.step("Проверяем текст сообщения об успехе"):
+        with allure.step("Проверяем, что сообщение об успешном выполнении отображается"):
             success_message = order_page.get_success_message()
+            assert success_message, \
+                "Сообщение об успешном создании заказа не найдено"
             assert "Заказ оформлен" in success_message, \
-                f"Ожидалось сообщение 'Заказ оформлен', получено: {success_message}"
+                f"Неверный текст сообщения. Ожидалось 'Заказ оформлен', получено: '{success_message}'"

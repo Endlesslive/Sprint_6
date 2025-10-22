@@ -17,7 +17,7 @@ class TestFAQSection:
     @pytest.mark.parametrize("question_index,expected_text", FAQ_TEST_DATA)
     @allure.feature("Раздел FAQ")
     @allure.story("Проверка вопросов и ответов")
-    @allure.title("Проверка раскрытия вопроса #{question_index} в разделе FAQ")
+    @allure.title("Проверка раскрытия вопроса {question_index} в разделе FAQ")
     @allure.description("Тест проверяет открытие ответа при клике на вопрос и корректность текста ответа")
     def test_faq_question_answer(self, faq_page, question_index, expected_text):
         """Проверка открытия ответа при клике на вопрос"""

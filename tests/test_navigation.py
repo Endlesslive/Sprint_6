@@ -22,5 +22,6 @@ class TestNavigation:
         with allure.step("Кликаем по логотипу Яндекса и переключаемся на новое окно"):
             main_page.open_yandex_logo_in_new_window()
         with allure.step("Проверяем, что открылась страница Яндекса/Дзена"):
-            assert main_page.verify_yandex_page_opened(), \
-                f"Ожидался переход на Дзен, но открылся URL: {main_page.get_current_url()}"
+            current_url = main_page.get_current_url()
+            assert "dzen.ru" in current_url or "yandex" in current_url, \
+                f"Ожидался переход на Дзен или Яндекс, но открылся URL: {current_url}"

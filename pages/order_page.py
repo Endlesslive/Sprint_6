@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.page_locators import OrderPageLocators
@@ -68,10 +69,8 @@ class OrderPage(BasePage):
         )
         self.click_element(rental_option_locator)
         # Цвет самоката
-        if user_data['color'] == 'чёрный':
-            self.click_element(OrderPageLocators.BLACK_CHECKBOX)
-        elif user_data['color'] == 'серый':
-            self.click_element(OrderPageLocators.GREY_CHECKBOX)
+        color_locator = OrderPageLocators.COLOR_CHECKBOXES[user_data['color']]
+        self.click_element(color_locator)
     
     def confirm_order(self):
         order_buttons = self.find_elements(OrderPageLocators.ORDER_BUTTON)

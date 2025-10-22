@@ -1,3 +1,5 @@
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.page_locators import MainPageLocators
 
@@ -33,12 +35,18 @@ class MainPage(BasePage):
         self.click_yandex_logo()
         self.wait_for_new_window(2)
         self.switch_to_new_window(original_window)
-        self.wait_for_url_change()
     
     def verify_yandex_page_opened(self):
-        """Проверка, что открылась страница Яндекса/Дзена"""
-        if self.wait_for_url_contains("dzen.ru", timeout=10):
+        """Проверка, что открылась страница Яндекса/Дзена - ждёт изменения URL"""
+        try:
+            # Пытаемся дождаться URL с dzen.ru
+            WebDriverWait(self.driver, 10).until(EC.url_contains("dzen.ru"))
             return True
-        if self.wait_for_url_contains("yandex", timeout=10):
-            return True
-        return False
+        except:
+            try:
+                # Если не dzen.ru, пытаемся дождаться yandex
+                WebDriverWait(self.driver, 5).until(EC.url_contains("yandex"))
+                return True
+            except:
+                # Если ни одно условие не выполнено
+                return False
