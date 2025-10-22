@@ -1,33 +1,31 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from locators.page_locators import FAQPageLocators
+from pages.base_page import BasePage
 
-class FAQPage:
+class FAQPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        super().__init__(driver)
     
-    def get_faq_question_locator(self, index):
-        return (By.ID, f"accordion__heading-{index}")
-    
-    def get_faq_answer_locator(self, index):
-        return (By.ID, f"accordion__panel-{index}")
+    def scroll_to_faq_section(self):
+        """Прокрутка к разделу FAQ"""
+        self.scroll_to_element(FAQPageLocators.FAQ_SECTION, block='start')
     
     def click_faq_question(self, index):
-        """Клик по вопросу с прокруткой и использованием JavaScript"""
-        question = self.wait.until(
-            EC.presence_of_element_located(self.get_faq_question_locator(index))
-        )
-        # Прокрутка элемента в видимую область
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", question)
-        # Небольшая задержка для завершения прокрутки
-        self.wait.until(EC.element_to_be_clickable(self.get_faq_question_locator(index)))
-        # Клик через JavaScript для избежания перекрытия
-        self.driver.execute_script("arguments[0].click();", question)
+        """Клик по вопросу"""
+        question_locator = FAQPageLocators.get_faq_question_locator(index)
+        self.scroll_to_element(question_locator)
+        self.click_element(question_locator)
     
     def get_faq_answer_text(self, index):
         """Получение текста ответа"""
-        answer = self.wait.until(
-            EC.visibility_of_element_located(self.get_faq_answer_locator(index))
-        )
-        return answer.text
+        answer_locator = FAQPageLocators.get_faq_answer_locator(index)
+        return self.get_element_text(answer_locator)
+    
+    def is_answer_visible(self, index):
+        """Проверка видимости ответа"""
+        answer_locator = FAQPageLocators.get_faq_answer_locator(index)
+        return self.is_element_visible(answer_locator)
+    
+    def get_question_text(self, index):
+        """Получение текста вопроса"""
+        question_locator = FAQPageLocators.get_faq_question_locator(index)
+        return self.get_element_text(question_locator)
